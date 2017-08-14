@@ -40,5 +40,51 @@ task :import => [:environment] do
     })
     puts "Invoice row #{row} added!"
   end
+
+  Item.delete_all
+  item_file = "lib/data/items.csv"
+
+  CSV.foreach(item_file, :headers => true) do |row|
+    Item.create!({
+      :name => row[1],
+      :description => row[2],
+      :unit_price => row[3],
+      :merchant_id => row[4],
+      :created_at => row[5],
+      :updated_at => row[6]
+    })
+    puts "Item row #{row} added!"
+  end
+
+  InvoiceItem.delete_all
+
+  invoice_items_file = "lib/data/invoice_items.csv"
+
+  CSV.foreach(invoice_items_file, :headers => true) do |row|
+    InvoiceItem.create!({
+      :item_id => row[1],
+      :invoice_id => row[2],
+      :quantity => row[3],
+      :unit_price => row[4],
+      :created_at => row[5],
+      :updated_at => row[6]
+    })
+    puts "InvoiceItem row #{row} added!"
+  end
+
+  Transaction.delete_all
+
+  transactions_file = "lib/data/transactions.csv"
+
+  CSV.foreach(transactions_file, :headers => true) do |row|
+    Transaction.create!({
+      :invoice_id => row[1],
+      :credit_card_number => row[2],
+      :result => row[4],
+      :created_at => row[5],
+      :updated_at => row[6]
+    })
+    puts "Transaction row #{row} added!"
+  end
 end
 
