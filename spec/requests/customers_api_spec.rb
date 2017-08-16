@@ -17,4 +17,39 @@ RSpec.describe "Customer APIs" do
     expect(response).to be_success
     expect(customer["id"]).to eq(id)
   end
+  it "can find by id" do
+    customer = create(:customer)
+    get "/api/v1/customers/find?id=#{customer.id}"
+    expect(response).to be_success
+    api_customer = JSON.parse(response.body)
+    expect(api_customer["first_name"]).to eq(customer.first_name)
+  end
+  it "can find by first name" do
+    customer = create(:customer)
+    get "/api/v1/customers/find?first_name=#{customer.first_name}"
+    expect(response).to be_success
+    api_customer = JSON.parse(response.body)
+    expect(api_customer["id"]).to eq(customer.id)
+  end
+  it "can find by last name" do
+    customer = create(:customer)
+    get "/api/v1/customers/find?last_name=#{customer.last_name}"
+    expect(response).to be_success
+    api_customer = JSON.parse(response.body)
+    expect(api_customer["id"]).to eq(customer.id)
+  end
+  it "can find by created_at" do
+    customer = create(:customer, created_at: DateTime.new(2001,2,3,4,5,6))
+    get "/api/v1/customers/find?created_at=#{customer.created_at}"
+    expect(response).to be_success
+    api_customer = JSON.parse(response.body)
+    expect(api_customer["first_name"]).to eq(customer.first_name)
+  end
+  it "can find by updated_at" do
+    customer = create(:customer, updated_at: DateTime.new(2001,2,3,4,5,6))
+    get "/api/v1/customers/find?updated_at=#{customer.updated_at}"
+    expect(response).to be_success
+    api_customer = JSON.parse(response.body)
+    expect(api_customer["first_name"]).to eq(customer.first_name)
+  end
 end
