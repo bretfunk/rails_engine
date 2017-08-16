@@ -33,7 +33,7 @@ Rails.application.routes.draw do
 
       resources :transactions, only: [:index, :show]
       namespace :transactions, only: [:index, :show] do
-        get "/:id/invoices", to: "invoices#index"
+        get "/:id/invoice", to: "invoices#index"
       end
       get "transactions/find_all", to: "transactions/search#index"
       get "transactions/find", to: "transactions/search#show"
