@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       namespace :merchants, only: [:index, :show] do
         get "/:id/items", to: "items#index"
         get "/:id/invoices", to: "invoices#index"
+        get "/:id/favorite_customer", to: "favorite_customer#index"
       end
 
       get "invoices/find_all", to: "invoices/search#index"
@@ -37,7 +38,7 @@ Rails.application.routes.draw do
       get "transactions/random", to: "transactions/random#show"
       resources :transactions, only: [:index, :show]
       namespace :transactions, only: [:index, :show] do
-        get "/:id/invoices", to: "invoices#index"
+        get "/:id/invoice", to: "invoices#index"
       end
 
       get "items/find_all", to: "items/search#index"
