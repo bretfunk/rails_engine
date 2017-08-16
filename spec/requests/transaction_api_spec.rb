@@ -1,10 +1,4 @@
 require "rails_helper"
-    #t.bigint "invoice_id"
-    #t.bigint "credit_card_number"
-    #t.string "result"
-    #t.datetime "created_at"
-    #t.datetime "updated_at"
-    #t.index ["invoice_id"], name: "index_transactions_on_invoice_id"
 
 RSpec.describe "Transaction APIs" do
   it "Shows all transactions" do

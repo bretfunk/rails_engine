@@ -1,5 +1,6 @@
 require 'rails_helper'
 require 'date'
+
 RSpec.describe "Merchant API" do
   it "shows all merchants" do
     create_list(:merchant, 5)

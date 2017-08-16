@@ -4,6 +4,7 @@ Rails.application.routes.draw do
       get "merchants/find_all", to: "merchants/search#index"
       get "merchants/find", to: "merchants/search#show"
       get "merchants/random", to: "merchants/random#show"
+      get "merchants/most_revenue", to: "merchants/bi_revenue#index"
       resources :merchants, only: [:index, :show]
       namespace :merchants, only: [:index, :show] do
         get "/:id/items", to: "items#index"
