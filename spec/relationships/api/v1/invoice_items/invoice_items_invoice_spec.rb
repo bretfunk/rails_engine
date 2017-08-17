@@ -2,7 +2,8 @@
 
 #RSpec.describe "Invoice Item Invoices API", :type => :request do
   #it "can see the invoice of the invoice item" do
-    #invoice_item = create(:invoice_item)
+    #invoice = create(:invoice)
+    #invoice_item = create(:invoice_item, invoice_id: invoice.id)
     #get "/api/v1/invoice_items/#{invoice_item.id}/invoice"
     #expect(response).to be_success
     #content = JSON.parse(response.body)
