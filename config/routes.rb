@@ -41,6 +41,7 @@ Rails.application.routes.draw do
         get "/:id/invoice", to: "invoices#index"
       end
 
+      get "items/most_revenue", to: "items/most_revenue#index"
       get "items/find_all", to: "items/search#index"
       get "items/find", to: "items/search#show"
       get "items/random", to: "items/random#show"
