@@ -1,15 +1,15 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
+      get "merchants/most_revenue", to: "merchants/bi_most_revenue#index"
+      get "merchants/most_items", to: "merchants/bi_items_sold#index"
       get "merchants/find_all", to: "merchants/search#index"
       get "merchants/find", to: "merchants/search#show"
       get "merchants/random", to: "merchants/random#show"
-      get "merchants/most_revenue", to: "merchants/bi_revenue#index"
       resources :merchants, only: [:index, :show]
       namespace :merchants, only: [:index, :show] do
         get "/:id/items", to: "items#index"
         get "/:id/invoices", to: "invoices#index"
-        get "/:id/favorite_customer", to: "favorite_customer#index"
       end
 
       get "invoices/find_all", to: "invoices/search#index"
@@ -19,7 +19,7 @@ Rails.application.routes.draw do
       namespace :invoices, only: [:index, :show] do
         get "/:id/merchant", to: "merchants#show"
         get "/:id/customer", to: "customers#show"
-        get "/:id/items", to: "items#show"
+        get "/:id/items", to: "items#index"
         get "/:id/invoice_items", to: "invoice_items#index"
         get "/:id/transactions", to: "transactions#index"
       end
@@ -38,18 +38,18 @@ Rails.application.routes.draw do
       get "transactions/random", to: "transactions/random#show"
       resources :transactions, only: [:index, :show]
       namespace :transactions, only: [:index, :show] do
-        get "/:id/invoice", to: "invoices#index"
+        get "/:id/invoices", to: "invoices#index"
       end
 
       get "items/most_revenue", to: "items/most_revenue#index"
       get "items/find_all", to: "items/search#index"
       get "items/find", to: "items/search#show"
       get "items/random", to: "items/random#show"
-      resources :items, only: [:index, :show]
       namespace :items, only: [:index, :show] do
         get "/:id/invoice_items", to: "invoice_items#index"
         get "/:id/merchant", to: "merchants#show"
       end
+      resources :items, only: [:index, :show]
 
       get "invoice_items/find_all", to: "invoice_items/search#index"
       get "invoice_items/find", to: "invoice_items/search#show"
