@@ -13,4 +13,5 @@ class Invoice < ApplicationRecord
     .order("totes_rev DESC")
     .limit(limit)
   end
+
 end

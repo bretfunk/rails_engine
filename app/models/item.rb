@@ -5,10 +5,6 @@ class Item < ApplicationRecord
   has_many :transactions, through: :invoices
 
   def self.most_revenue(limit = 5)
-    # ActiveRecord::Base.connection.execute(SELECT items.name, Sum(invoice_items.quantity * invoice_items.unit_price)
-    # AS "Total Revenue" FROM items INNER JOIN invoice_items
-    # ON items.id = invoice_items.id GROUP BY items.name
-    # ORDER BY "Total Revenue";)
     select("items.*, sum(invoice_items.quantity * invoice_items.unit_price) AS total_revenue")
     .joins(:invoice_items)
     .group("items.id")
@@ -23,5 +19,6 @@ class Item < ApplicationRecord
     .order("most_items_sold DESC")
     .limit(limit)
   end
+
 
 end
