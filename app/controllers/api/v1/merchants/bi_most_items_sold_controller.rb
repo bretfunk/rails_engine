@@ -1,4 +1,4 @@
-class Api::V1::Merchants::BiItemsSoldController < ApplicationController
+class Api::V1::Merchants::BiMostItemsSoldController < ApplicationController
 
   def index
     render json: ActiveRecord::Base.connection.execute("
