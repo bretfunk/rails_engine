@@ -11,8 +11,8 @@ Rails Engine uses serializer for API output and FactoryGirl for testing.
 * Configuration
 
 * Database creation
-To create the database, run db:create
-Then run db:migrate to run the migration.
+To create the database, go to your terminal and run rake db:create
+Then run rake db:migrate to run the migration.
 Then, rake import to import the files.
 
 * Database initialization
