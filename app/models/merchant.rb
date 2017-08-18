@@ -9,9 +9,9 @@ class Merchant < ApplicationRecord
     ActiveRecord::Base.connection.execute("SELECT customers.first_name, customers.last_name, count(transactions.id) FROM merchants
     INNER JOIN invoices ON merchants.id = invoices.merchant_id
     INNER JOIN customers ON customers.id = invoices.customer_id
-    INNER JOIN transactions ON transactions.invoice_id = invoices.id AND merchants.id =
-    WHERE transactions.result = 'success' #{id} GROUP BY customers.first_name, customers.last_name
-    ORDER BY COUNT(transactions.id) DESC;")
+    INNER JOIN transactions ON transactions.invoice_id = invoices.id
+    WHERE transactions.result = 'success' AND merchants.id = #{id} GROUP BY customers.first_name, customers.last_name
+    ORDER BY COUNT(transactions.id) DESC LIMIT 1;")
   end
 
   def self.most_items_sold(limit=5)
@@ -25,22 +25,14 @@ class Merchant < ApplicationRecord
     DESC LIMIT #{limit};").to_a
   end
 
-  def self.most_revenue_for_all_merchants
-    #ActiveRecord::Base.connection.execute("
-    #SELECT merchants.name,
-    #SUM(invoice_items.unit_price * invoice_items.quantity)
-    #AS revenue FROM merchants
-    #INNER JOIN invoices ON merchants.id = invoices.merchant_id
-    #INNER JOIN invoice_items ON invoices.id = invoice_items.invoice_id
-    #GROUP BY merchants.name LIMIT 5;").to_a
-    #select("merchants.name").joins(invoices: :invoice_items)
-    #group("name")
-    select("merchants.name, sum(quantity * unit_price) AS revenue")
+  def self.most_revenue_for_all_merchants(limit=5)
+    select("merchants.name, merchants.id, sum(quantity * unit_price) AS revenue")
     .joins(invoices: :invoice_items)
     .group(:id)
     .order("revenue DESC")
+    .limit(limit)
   end
-  
+
   def self.most_revenue_for_one_merchant(id = 1)
     select("merchants.name").joins(invoices: [:invoice_items, :transactions])
     .where(transactions: { result: 'success'}, merchants: { id: "#{id}" })
@@ -57,5 +49,15 @@ class Merchant < ApplicationRecord
      Merchant.joins(invoices: [:invoice_items, :transactions])
      .where(transactions: { result: 'success'}, invoices: {created_at: "#{date}"})
      .sum("quantity * unit_price")
+  end
+
+  def self.pending_invoices(id)
+    ActiveRecord::Base.connection.execute("
+      SELECT DISTINCT customers.first_name, customers.last_name
+      FROM customers INNER JOIN invoices
+      ON customers.id = invoices.customer_id
+      INNER JOIN transactions ON transactions.invoice_id = invoices.id
+      WHERE transactions.result='failed'
+      AND invoices.merchant_id=1;")
   end
 end

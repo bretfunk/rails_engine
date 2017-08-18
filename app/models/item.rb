@@ -20,5 +20,12 @@ class Item < ApplicationRecord
     .limit(limit)
   end
 
-
+  def self.best_day(id)
+    ActiveRecord::Base.connection.execute("
+      SELECT invoices.created_at, invoice_items.item_id, invoice_items.quantity
+      FROM invoices INNER JOIN invoice_items ON invoices.id = invoice_items.invoice_id
+      WHERE invoice_items.item_id= #{id}
+      GROUP BY invoices.created_at, invoice_items.item_id, invoice_items.quantity
+      ORDER BY invoice_items.quantity DESC LIMIT 1;")
+  end
 end

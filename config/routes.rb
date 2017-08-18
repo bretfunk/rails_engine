@@ -2,12 +2,15 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       get "merchants/most_revenue", to: "merchants/bi_most_revenue#index"
-      get "merchants/most_items", to: "merchants/bi_items_sold#index"
+      get "merchants/most_items", to: "merchants/bi_most_items_sold#index"
+      get "merchants/revenue", to: "merchants/bi_all_revenue#index"
       get "merchants/:id/revenue", to: "merchants/bi_revenue#show"
+      get "merchants/:id/favorite_customer", to: "merchants/favorite_customers#show"
       get "merchants/find_all", to: "merchants/search#index"
       get "merchants/find", to: "merchants/search#show"
       get "merchants/random", to: "merchants/random#show"
       get "merchants/most_revenue", to: "merchants/bi_most_revenue#show"
+      get "merchants/:id/customers_with_pending_invoices", to: "merchants/bi_pending_invoices#index"
       resources :merchants, only: [:index, :show]
       namespace :merchants, only: [:index, :show] do
         get "/:id/items", to: "items#index"
@@ -44,7 +47,7 @@ Rails.application.routes.draw do
         get "/:id/invoices", to: "invoices#index"
       end
 
-      # get "items/most_revenue", to: "items/most_revenue#index"
+      get "items/:id/best_day", to: "items/bi_best_day#show"
       get "items/find_all", to: "items/search#index"
       get "items/find", to: "items/search#show"
       get "items/random", to: "items/random#show"
