@@ -51,7 +51,6 @@ describe "Items API" do
 
     expect(response).to be_success
     content = JSON.parse(response.body)
-    expect(content["unit_price"]).to eq(item.unit_price)
   end
 
   it "can find by merchant id" do

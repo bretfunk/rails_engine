@@ -13,9 +13,9 @@ Rails Engine uses serializer for API output and FactoryGirl for testing.
 * Configuration
 - In your terminal make a directory to hold this project (including the sample data).
 - Clone this repo and the sample data into that directory
-- git clone git@github.com:turingschool-examples/sales_engine.git
-- git clone git@github.com:bretfunk/rails_engine.git
-- `cd ralesengine`
+- git clone `git@github.com:turingschool-examples/sales_engine.git`
+- git clone `git@github.com:bretfunk/rails_engine.git`
+- `cd rails_engine`
 - Run `bundle`
 
 * Database creation
