@@ -22,7 +22,7 @@ class Item < ApplicationRecord
 
   def self.best_day(id)
     ActiveRecord::Base.connection.execute("
-      SELECT invoices.created_at, invoice_items.item_id, invoice_items.quantity
+      SELECT invoices.created_at AS best_day
       FROM invoices INNER JOIN invoice_items ON invoices.id = invoice_items.invoice_id
       WHERE invoice_items.item_id= #{id}
       GROUP BY invoices.created_at, invoice_items.item_id, invoice_items.quantity

@@ -1,3 +1,4 @@
 class FavoriteMerchantSerializer < ActiveModel::Serializer
-  attributes :id, :name, :count
+  attributes :id, :name
+
 end
