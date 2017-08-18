@@ -67,16 +67,6 @@ describe "Invoice Item API" do
     expect(content["quantity"]).to eq(invoice_item.quantity)
   end
 
-  it "can find an invoice_item unit price" do
-    invoice_item = create(:invoice_item)
-
-    get "/api/v1/invoice_items/find?unit_price=#{invoice_item.unit_price}"
-
-    content = JSON.parse(response.body)
-
-    expect(response).to be_success
-    expect(content["unit_price"]).to eq(invoice_item.unit_price)
-  end
 
   it "can find an invoice_item created date" do
     invoice_item = create(:invoice_item, created_at: DateTime.new(2015))
@@ -153,18 +143,6 @@ describe "Invoice Item API" do
 
   end
 
-  it "can find all invoice_item unit price" do
-    invoice_items = create_list(:invoice_item, 6)
-
-    get "/api/v1/invoice_items/find_all?unit_price=#{invoice_items.first.unit_price}"
-
-    content = JSON.parse(response.body)
-
-    expect(response).to be_success
-    expect(content.first["unit_price"]).to eq(invoice_items.first.unit_price)
-    expect(content.count).to eq(6)
-
-  end
 
   it "can find all invoice_item created date" do
     invoice_items = create_list(:invoice_item, 4, created_at: DateTime.new(2015))

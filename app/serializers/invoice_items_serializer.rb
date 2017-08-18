@@ -1,11 +1,8 @@
 class InvoiceItemsSerializer < ActiveModel::Serializer
   attributes :id, :item_id, :invoice_id, :quantity, :unit_price
+
+  def unit_price
+    (object.unit_price.to_f/100).to_s
+  end
+
 end
-    #t.bigint "item_id"
-    #t.bigint "invoice_id"
-    #t.integer "quantity"
-    #t.integer "unit_price"
-    #t.datetime "created_at"
-    #t.datetime "updated_at"
-    #t.index ["invoice_id"], name: "index_invoice_items_on_invoice_id"
-    #t.index ["item_id"], name: "index_invoice_items_on_item_id"
