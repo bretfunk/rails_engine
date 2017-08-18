@@ -6,11 +6,11 @@ class Merchant < ApplicationRecord
   has_many :invoice_items, through: :invoices
 
   def self.favorite_customer(id)
-    ActiveRecord::Base.connection.execute("SELECT customers.first_name, customers.last_name, count(transactions.id) FROM merchants
+    ActiveRecord::Base.connection.execute("SELECT customers.id FROM merchants
     INNER JOIN invoices ON merchants.id = invoices.merchant_id
     INNER JOIN customers ON customers.id = invoices.customer_id
     INNER JOIN transactions ON transactions.invoice_id = invoices.id
-    WHERE transactions.result = 'success' AND merchants.id = #{id} GROUP BY customers.first_name, customers.last_name
+    WHERE transactions.result = 'success' AND merchants.id = #{id} GROUP BY customers.id
     ORDER BY COUNT(transactions.id) DESC LIMIT 1;")
   end
 
@@ -53,7 +53,7 @@ class Merchant < ApplicationRecord
 
   def self.pending_invoices(id)
     ActiveRecord::Base.connection.execute("
-      SELECT DISTINCT customers.first_name, customers.last_name
+      SELECT DISTINCT customers.id, customers.first_name, customers.last_name
       FROM customers INNER JOIN invoices
       ON customers.id = invoices.customer_id
       INNER JOIN transactions ON transactions.invoice_id = invoices.id

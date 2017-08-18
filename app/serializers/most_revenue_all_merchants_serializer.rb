@@ -1,3 +1,3 @@
 class MostRevenueAllMerchantsSerializer < ActiveModel::Serializer
-  attributes :id, :name, :revenue
+  attributes :id, :name
 end
