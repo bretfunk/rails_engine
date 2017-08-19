@@ -5,7 +5,7 @@ describe "Transaction Invoice API", type: :request do
     invoice = create(:invoice)
     transaction = create(:transaction, invoice_id: invoice.id)
 
-    get "/api/v1/transactions/#{transaction.id}/invoices"
+    get "/api/v1/transactions/#{transaction.id}/invoice"
 
     expect(response).to be_success
     content = JSON.parse(response.body)
