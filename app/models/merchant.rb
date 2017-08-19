@@ -11,14 +11,6 @@ class Merchant < ApplicationRecord
 
   def self.most_items_sold(limit=50)
     limit = limit.to_i
-    #ActiveRecord::Base.connection.execute("
-    #SELECT merchants.name, SUM(invoice_items.quantity)
-    #AS items_sold FROM merchants
-    #INNER JOIN invoices ON merchants.id = invoices.merchant_id
-    #INNER JOIN invoice_items ON invoices.id = invoice_items.invoice_id
-    #GROUP BY merchants.name
-    #ORDER BY items_sold
-    #DESC LIMIT #{limit};")
     select("merchants.*")
     .joins(invoices: [:transactions, :invoice_items])
     .where(transactions: {result: 'success'})
