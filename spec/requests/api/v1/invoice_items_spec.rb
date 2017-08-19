@@ -99,7 +99,7 @@ describe "Invoice Item API" do
 
     expect(response).to be_success
     expect(content.first["id"]).to eq(invoice_items.first.id)
-    expect(content.count).to eq(4)
+    expect(content.count).to eq(1)
   end
 
   it "can find all invoice_item invoices by id" do
