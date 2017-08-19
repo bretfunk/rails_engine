@@ -3,7 +3,7 @@ require 'rails_helper'
 describe "Merchant Items API", type: :request do
   it "can show items for a single merchant" do
     merchant = create(:merchant)
-    items = create_list(:item, 5)
+    items = create_list(:item, 5, merchant_id: merchant.id)
 
     get "/api/v1/merchants/#{merchant.id}/items"
 
