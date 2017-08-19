@@ -9,16 +9,22 @@ class Merchant < ApplicationRecord
     self.customers.joins(invoices: :transactions).where(transactions: {result: "success"}).group('customers.id').order('count(customers.id) desc').first
   end
 
-  def self.most_items_sold(limit=5)
+  def self.most_items_sold(limit=50)
     limit = limit.to_i
-    ActiveRecord::Base.connection.execute("
-    SELECT merchants.name, SUM(invoice_items.quantity)
-    AS items_sold FROM merchants
-    INNER JOIN invoices ON merchants.id = invoices.merchant_id
-    INNER JOIN invoice_items ON invoices.id = invoice_items.invoice_id
-    GROUP BY merchants.name
-    ORDER BY items_sold
-    DESC LIMIT #{limit};")
+    #ActiveRecord::Base.connection.execute("
+    #SELECT merchants.name, SUM(invoice_items.quantity)
+    #AS items_sold FROM merchants
+    #INNER JOIN invoices ON merchants.id = invoices.merchant_id
+    #INNER JOIN invoice_items ON invoices.id = invoice_items.invoice_id
+    #GROUP BY merchants.name
+    #ORDER BY items_sold
+    #DESC LIMIT #{limit};")
+    select("merchants.*")
+    .joins(invoices: [:transactions, :invoice_items])
+    .where(transactions: {result: 'success'})
+    .group(:id)
+    .order("sum(quantity) desc")
+    .limit(limit)
   end
 
   def self.all_merchants_revenue_by_quantity(limit=5)
@@ -37,13 +43,13 @@ class Merchant < ApplicationRecord
   end
 
   def self.revenue_by_date(id, date)
-     Merchant.joins(invoices: [:invoice_items, :transactions])
+     joins(invoices: [:invoice_items, :transactions])
      .where(transactions: { result: 'success'}, merchants: { id: "#{id}"}, invoices: {created_at: "#{date}"})
      .group("merchants.name").sum("quantity * unit_price")
   end
 
   def self.all_merchants_revenue_by_date(date)
-     Merchant.joins(invoices: [:invoice_items, :transactions])
+     joins(invoices: [:invoice_items, :transactions])
      .where(transactions: { result: 'success'}, invoices: {created_at: "#{date}"})
      .sum("quantity * unit_price")
   end
