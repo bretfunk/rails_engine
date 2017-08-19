@@ -10,6 +10,7 @@ class Merchant < ApplicationRecord
   end
 
   def self.most_items_sold(limit=5)
+    limit = limit.to_i
     ActiveRecord::Base.connection.execute("
     SELECT merchants.name, SUM(invoice_items.quantity)
     AS items_sold FROM merchants
@@ -17,10 +18,11 @@ class Merchant < ApplicationRecord
     INNER JOIN invoice_items ON invoices.id = invoice_items.invoice_id
     GROUP BY merchants.name
     ORDER BY items_sold
-    DESC LIMIT #{limit};").to_a
+    DESC LIMIT #{limit};")
   end
 
   def self.all_merchants_revenue_by_quantity(limit=5)
+    limit = limit.to_i
     select("merchants.name, merchants.id, sum(quantity * unit_price) AS revenue")
     .joins(invoices: :invoice_items)
     .group(:id)
