@@ -4,12 +4,12 @@ Rails.application.routes.draw do
       get "merchants/most_revenue", to: "merchants/bi_most_revenue#index"
       get "merchants/most_items", to: "merchants/bi_most_items_sold#index"
       get "merchants/revenue", to: "merchants/bi_all_revenue#index"
-      get "merchants/:id/revenue", to: "merchants/bi_revenue#show"
-      get "merchants/:id/favorite_customer", to: "merchants/favorite_customers#show"
       get "merchants/find_all", to: "merchants/search#index"
       get "merchants/find", to: "merchants/search#show"
       get "merchants/random", to: "merchants/random#show"
       get "merchants/most_revenue", to: "merchants/bi_most_revenue#show"
+      get "merchants/:id/revenue", to: "merchants/bi_revenue#show"
+      get "merchants/:id/favorite_customer", to: "merchants/favorite_customers#show"
       get "merchants/:id/customers_with_pending_invoices", to: "merchants/bi_pending_invoices#index"
       resources :merchants, only: [:index, :show]
       namespace :merchants, only: [:index, :show] do
@@ -64,8 +64,8 @@ Rails.application.routes.draw do
       get "invoice_items/random", to: "invoice_items/random#show"
       resources :invoice_items, only: [:index, :show]
       namespace :invoice_items, only: [:index, :show] do
-        get "/:id/invoice", to: "invoices#show"
-        get "/:id/item", to: "items#show"
+        get "/:id/invoice", to: "invoice#show"
+        get "/:id/item", to: "item#show"
       end
     end
   end
