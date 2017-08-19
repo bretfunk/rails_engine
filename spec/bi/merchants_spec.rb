@@ -46,7 +46,6 @@ RSpec.describe "Merchant Biz Intel", :type => :request do
     get "/api/v1/merchants/most_items?date=#{date}"
     expect(response).to be_success
     content = JSON.parse(response.body)
-    byebug
     #expect(content[0]["id"]).to eq(merchant1.id)
     #showing up as nil
   end

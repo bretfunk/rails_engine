@@ -3,9 +3,13 @@ class Merchant < ApplicationRecord
   has_many :items
   has_many :invoice_items, through: :invoices
   has_many :customers, through: :invoices
+  has_many :invoice_items, through: :invoices
 
   def favorite_customer
-    self.customers.joins(invoices: :transactions).where(transactions: {result: "success"}).group('customers.id').order('count(customers.id) desc').first
+    self.customers.joins(invoices: :transactions)
+    .where(transactions: {result: "success"})
+    .group('customers.id')
+    .order('count(customers.id) desc').first
   end
 
   def self.most_items_sold(limit=50)
