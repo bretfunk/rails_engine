@@ -5,14 +5,8 @@ class Merchant < ApplicationRecord
   has_many :customers, through: :invoices
   has_many :invoice_items, through: :invoices
 
-  def self.favorite_customer(id)
-    ActiveRecord::Base.connection.execute("SELECT customers.id FROM merchants
-    INNER JOIN invoices ON merchants.id = invoices.merchant_id
-    INNER JOIN customers ON customers.id = invoices.customer_id
-    INNER JOIN transactions ON transactions.invoice_id = invoices.id
-    WHERE transactions.result = 'success' AND merchants.id = #{id} GROUP BY customers.id
-    ORDER BY COUNT(transactions.id) DESC LIMIT 2;")
-    #.self.joins(invoices: :transactions).where(transactions: {result: "success"}.group(:id)
+  def favorite_customer
+    self.customers.joins(invoices: :transactions).where(transactions: {result: "success"}).group('customers.id').order('count(customers.id) desc').first
   end
 
   def self.most_items_sold(limit=5)
@@ -59,6 +53,7 @@ class Merchant < ApplicationRecord
       ON customers.id = invoices.customer_id
       INNER JOIN transactions ON transactions.invoice_id = invoices.id
       WHERE transactions.result='failed'
-      AND invoices.merchant_id=1;")
+      AND invoices.merchant_id=#{id};")
+    #self.customers.joins(invoices: :transactions).where(transactions: {result: "failure"})
   end
 end
