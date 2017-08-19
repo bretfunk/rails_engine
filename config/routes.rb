@@ -44,15 +44,15 @@ Rails.application.routes.draw do
       get "transactions/random", to: "transactions/random#show"
       resources :transactions, only: [:index, :show]
       namespace :transactions, only: [:index, :show] do
-        get "/:id/invoices", to: "invoices#index"
+        get "/:id/invoice", to: "invoice#index"
       end
 
-      get "items/:id/best_day", to: "items/bi_best_day#show"
       get "items/find_all", to: "items/search#index"
       get "items/find", to: "items/search#show"
       get "items/random", to: "items/random#show"
       get "/items/most_revenue", to: "items/bi_most_revenue#show"
       get "/items/most_items", to: "items/bi_most_items#show"
+      get "items/:id/best_day", to: "items/bi_best_day#show"
       namespace :items, only: [:index, :show] do
         get "/:id/invoice_items", to: "invoice_items#index"
         get "/:id/merchant", to: "merchants#show"

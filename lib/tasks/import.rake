@@ -15,7 +15,7 @@ task :import => [:environment] do
     puts "Customer row #{row} added!"
   end
   Merchant.delete_all
-  merchant_file = "lib/data/customers.csv"
+  merchant_file = "lib/data/merchants.csv"
 
   CSV.foreach(merchant_file, :headers => true) do |row|
     Merchant.create!({

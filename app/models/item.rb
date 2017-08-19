@@ -1,11 +1,14 @@
 class Item < ApplicationRecord
+  default_scope { order(id: :desc) }
+
   belongs_to :merchant
   has_many :invoice_items
   has_many :invoices, through: :invoice_items
   has_many :transactions, through: :invoices
 
+
   def self.most_revenue(limit = 5)
-    select("items.*, sum(invoice_items.quantity * invoice_items.unit_price) AS total_revenue")
+    unscoped.select("items.*, sum(invoice_items.quantity * invoice_items.unit_price) AS total_revenue")
     .joins(:invoice_items)
     .group("items.id")
     .order("total_revenue DESC")
@@ -13,7 +16,7 @@ class Item < ApplicationRecord
   end
 
   def self.most_items(limit = 5)
-    select("items.*, sum(invoice_items.quantity) AS most_items_sold")
+    unscoped.select("items.*, sum(invoice_items.quantity) AS most_items_sold")
     .joins(:invoice_items)
     .group("items.id, items.name")
     .order("most_items_sold DESC")
@@ -21,6 +24,7 @@ class Item < ApplicationRecord
   end
 
   def self.best_day(id)
+    #scope
     ActiveRecord::Base.connection.execute("
       SELECT invoices.created_at AS best_day
       FROM invoices INNER JOIN invoice_items ON invoices.id = invoice_items.invoice_id
