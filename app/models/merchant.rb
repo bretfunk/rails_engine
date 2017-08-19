@@ -25,7 +25,7 @@ class Merchant < ApplicationRecord
     DESC LIMIT #{limit};").to_a
   end
 
-  def self.most_revenue_for_all_merchants(limit=5)
+  def self.all_merchants_revenue_by_quantity(limit=5)
     select("merchants.name, merchants.id, sum(quantity * unit_price) AS revenue")
     .joins(invoices: :invoice_items)
     .group(:id)
@@ -45,7 +45,7 @@ class Merchant < ApplicationRecord
      .group("merchants.name").sum("quantity * unit_price")
   end
 
-  def self.all_revenue_by_date(date)
+  def self.all_merchants_revenue_by_date(date)
      Merchant.joins(invoices: [:invoice_items, :transactions])
      .where(transactions: { result: 'success'}, invoices: {created_at: "#{date}"})
      .sum("quantity * unit_price")
