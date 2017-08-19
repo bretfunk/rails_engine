@@ -11,7 +11,8 @@ class Merchant < ApplicationRecord
     INNER JOIN customers ON customers.id = invoices.customer_id
     INNER JOIN transactions ON transactions.invoice_id = invoices.id
     WHERE transactions.result = 'success' AND merchants.id = #{id} GROUP BY customers.id
-    ORDER BY COUNT(transactions.id) DESC LIMIT 1;")
+    ORDER BY COUNT(transactions.id) DESC LIMIT 2;")
+    #.self.joins(invoices: :transactions).where(transactions: {result: "success"}.group(:id)
   end
 
   def self.most_items_sold(limit=5)
