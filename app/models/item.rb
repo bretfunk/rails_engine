@@ -24,12 +24,19 @@ class Item < ApplicationRecord
   end
 
   def self.best_day(id)
-    #scope
+  #   unscoped.select("items.*, invoices.created_at AS best_day")
+  #   .joins(:invoice_items, [:invoices])
+  #   .where("invoice_items.item_id = #{id}")
+  #   .group("items.id, invoices.created_at, invoice_items.quantity")
+  #   .order("best_day DESC")
+  # end
+  #
+
     ActiveRecord::Base.connection.execute("
       SELECT invoices.created_at AS best_day
       FROM invoices INNER JOIN invoice_items ON invoices.id = invoice_items.invoice_id
       WHERE invoice_items.item_id= #{id}
       GROUP BY invoices.created_at, invoice_items.item_id, invoice_items.quantity
-      ORDER BY invoice_items.quantity DESC LIMIT 1;")
+      ORDER BY invoice_items.quantity DESC LIMIT 1;").to_a.first
   end
 end
